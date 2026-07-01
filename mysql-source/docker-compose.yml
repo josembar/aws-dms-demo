@@ -1,0 +1,23 @@
+version: "3.9"
+
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: mysql-source
+
+    restart: unless-stopped
+
+    ports:
+      - "3306:3306"
+
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: company
+
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./my.cnf:/etc/my.cnf
+      - ./init:/docker-entrypoint-initdb.d
+
+volumes:
+  mysql-data:
