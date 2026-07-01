@@ -142,3 +142,37 @@ Conditions:
   PublicAccessCondition: !Equals
     - !Ref PubliclyAccessible
     - "true"
+
+Resources:
+
+  #################################################
+  # Security Group
+  #################################################
+  AuroraSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security Group for Aurora MySQL
+      GroupName: !Sub "${ProjectName}-${Environment}-aurora-sg"
+      VpcId: !Ref VpcId
+      # Tags:
+      #   - Key: Name
+      #     Value: !Sub "${ProjectName}-${Environment}-aurora-sg"
+      #   - Key: Project
+      #     Value: !Ref ProjectName
+      #   - Key: Environment
+      #     Value: !Ref Environment
+      #   - Key: ManagedBy
+      #     Value: CloudFormation
+
+  #################################################
+  # Security Group Ingress
+  #################################################
+  AuroraMySQLIngress:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupId: !Ref AuroraSecurityGroup
+      Description: Allow MySQL access
+      IpProtocol: tcp
+      FromPort: !Ref DBPort
+      ToPort: !Ref DBPort
+      CidrIp: !Ref AllowedCIDR
