@@ -176,3 +176,22 @@ Resources:
       FromPort: !Ref DBPort
       ToPort: !Ref DBPort
       CidrIp: !Ref AllowedCIDR
+  
+  #################################################
+  # DB Subnet Group
+  #################################################
+  AuroraSubnetGroup:
+    Type: AWS::RDS::DBSubnetGroup
+    Properties:
+      DBSubnetGroupName: !Sub "${ProjectName}-${Environment}-aurora-subnet-group"
+      DBSubnetGroupDescription: Aurora MySQL DB Subnet Group
+      SubnetIds: !Ref SubnetIds
+      # Tags:
+      #   - Key: Name
+      #     Value: !Sub "${ProjectName}-${Environment}-aurora-subnet-group"
+      #   - Key: Project
+      #     Value: !Ref ProjectName
+      #   - Key: Environment
+      #     Value: !Ref Environment
+      #   - Key: ManagedBy
+      #     Value: CloudFormation
