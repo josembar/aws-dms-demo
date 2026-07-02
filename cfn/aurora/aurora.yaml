@@ -393,3 +393,86 @@ Resources:
       #     Value: !Ref Environment
       #   - Key: ManagedBy
       #     Value: CloudFormation
+
+#################################################
+# Outputs
+#################################################
+
+Outputs:
+  #################################################
+  # Connection
+  #################################################
+
+  ClusterEndpoint:
+    Description: Aurora cluster endpoint
+    Value: !GetAtt AuroraCluster.Endpoint.Address
+    Export:
+      Name: !Sub "${ProjectName}-${Environment}-ClusterEndpoint"
+
+  ReaderEndpoint:
+    Description: Aurora reader endpoint
+    Value: !GetAtt AuroraCluster.ReadEndpoint.Address
+    Export:
+      Name: !Sub "${ProjectName}-${Environment}-ReaderEndpoint"
+
+  WriterEndpoint:
+    Description: Aurora writer endpoint
+    Value: !GetAtt AuroraWriterInstance.Endpoint.Address
+    Export:
+      Name: !Sub "${ProjectName}-${Environment}-WriterEndpoint"
+
+  Port:
+    Description: Aurora database port
+    Value: !Ref DBPort
+    Export:
+      Name: !Sub "${ProjectName}-${Environment}-Port"
+
+  #################################################
+  # Infrastructure
+  #################################################
+
+  ClusterArn:
+    Description: Aurora cluster ARN
+    Value: !GetAtt AuroraCluster.DBClusterArn
+    Export:
+      Name: !Sub "${ProjectName}-${Environment}-ClusterArn"
+
+  ClusterResourceId:
+    Description: Aurora Cluster Resource ID
+    Value: !GetAtt AuroraCluster.DbClusterResourceId
+    Export:
+      Name: !Sub "${ProjectName}-${Environment}-ClusterResourceId"
+
+  SecurityGroupId:
+    Description: Aurora Security Group
+    Value: !Ref AuroraSecurityGroup
+    Export:
+      Name: !Sub "${ProjectName}-${Environment}-SecurityGroupId"
+
+  SubnetGroup:
+    Description: Aurora DB Subnet Group
+    Value: !Ref AuroraSubnetGroup
+    Export:
+      Name: !Sub "${ProjectName}-${Environment}-SubnetGroup"
+
+  ClusterParameterGroup:
+    Description: Cluster Parameter Group
+    Value: !Ref AuroraClusterParameterGroup
+    Export:
+      Name: !Sub "${ProjectName}-${Environment}-ClusterParameterGroup"
+
+  InstanceParameterGroup:
+    Description: Instance Parameter Group
+    Value: !Ref AuroraInstanceParameterGroup
+    Export:
+      Name: !Sub "${ProjectName}-${Environment}-InstanceParameterGroup"
+
+  #################################################
+  # Database
+  #################################################
+
+  DatabaseName:
+    Description: Initial database name
+    Value: !Ref DBName
+    Export:
+      Name: !Sub "${ProjectName}-${Environment}-DatabaseName"
