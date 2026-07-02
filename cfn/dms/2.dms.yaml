@@ -120,6 +120,13 @@ Parameters:
     Type: String
     Description: Aurora master password.
     NoEcho: true
+  
+  DBPort:
+    Type: Number
+    Description: Database listener port.
+    Default: 3306
+    MinValue: 1150
+    MaxValue: 65535
 
 Conditions:
 
@@ -286,6 +293,16 @@ Resources:
       #     Value: !Ref Environment
       #   - Key: ManagedBy
       #     Value: CloudFormation
+  
+  AuroraDMSIngress:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupId:
+        Fn::ImportValue: !Sub "${ProjectName}-${Environment}-SecurityGroupId"
+      IpProtocol: tcp
+      FromPort: !Ref DBPort
+      ToPort: !Ref DBPort
+      SourceSecurityGroupId: !Ref DMSSecurityGroup
 
 Outputs:
 
