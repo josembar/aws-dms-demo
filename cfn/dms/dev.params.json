@@ -18,5 +18,9 @@
   {
     "ParameterKey": "SourcePassword",
     "ParameterValue": "DmsPassword123!"
+  },
+  {
+    "ParameterKey": "TargetPassword",
+    "ParameterValue": "MyStrongPassword123!"
   }
 ]

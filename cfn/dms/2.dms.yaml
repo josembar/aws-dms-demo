@@ -110,6 +110,16 @@ Parameters:
     Type: String
     Default: aws-dms-lab-aurora
     Description: Name of the deployed Aurora CloudFormation stack.
+  
+  TargetUsername:
+    Type: String
+    Description: Aurora master username.
+    Default: admin
+
+  TargetPassword:
+    Type: String
+    Description: Aurora master password.
+    NoEcho: true
 
 Conditions:
 
@@ -250,6 +260,33 @@ Resources:
       #   - Key: ManagedBy
       #     Value: CloudFormation
 
+  #################################################
+  # DMS Target Endpoint
+  #################################################
+  DMSTargetEndpoint:
+    Type: AWS::DMS::Endpoint
+    Properties:
+      EndpointIdentifier: !Sub "${ProjectName}-${Environment}-target"
+      EndpointType: target
+      EngineName: aurora
+      ServerName:
+        Fn::ImportValue: !Sub "${ProjectName}-${Environment}-ClusterEndpoint"
+      Port:
+        Fn::ImportValue: !Sub "${ProjectName}-${Environment}-Port"
+      DatabaseName:
+        Fn::ImportValue: !Sub "${ProjectName}-${Environment}-DatabaseName"
+      Username: !Ref TargetUsername
+      Password: !Ref TargetPassword
+      # Tags:
+      #   - Key: Name
+      #     Value: !Sub "${ProjectName}-${Environment}-target"
+      #   - Key: Project
+      #     Value: !Ref ProjectName
+      #   - Key: Environment
+      #     Value: !Ref Environment
+      #   - Key: ManagedBy
+      #     Value: CloudFormation
+
 Outputs:
 
   DMSReplicationInstanceArn:
@@ -263,3 +300,9 @@ Outputs:
     Value: !Ref DMSSourceEndpoint
     Export:
       Name: !Sub "${ProjectName}-${Environment}-SourceEndpointArn"
+  
+  TargetEndpointArn:
+    Description: Source Endpoint ARN
+    Value: !Ref DMSTargetEndpoint
+    Export:
+      Name: !Sub "${ProjectName}-${Environment}-TargetEndpointArn"
