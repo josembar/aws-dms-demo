@@ -1,0 +1,18 @@
+[
+  {
+    "ParameterKey": "VpcId",
+    "ParameterValue": "vpc-0f9dd02c4b67b33f1"
+  },
+  {
+    "ParameterKey": "SubnetIds",
+    "ParameterValue": "subnet-032f94b991bc65a6f,subnet-0dccfecf5b2b9c7f5"
+  },
+  {
+    "ParameterKey": "AllowedCIDR",
+    "ParameterValue": "152.203.124.31/32"
+  },
+  {
+    "ParameterKey": "MasterPassword",
+    "ParameterValue": "MyStrongPassword123!"
+  }
+]
