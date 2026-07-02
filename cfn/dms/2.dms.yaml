@@ -209,12 +209,57 @@ Resources:
       #     Value: !Ref Environment
       #   - Key: ManagedBy
       #     Value: CloudFormation
+  
+  #################################################
+  # DMS Source Endpoint
+  #################################################
+  DMSSourceEndpoint:
+    Type: AWS::DMS::Endpoint
+    Properties:
+      #################################################
+      # General
+      #################################################
+      EndpointIdentifier: !Sub "${ProjectName}-${Environment}-source"
+      EndpointType: source
+      EngineName: mysql
+      #################################################
+      # Connection
+      #################################################
+      ServerName: !Ref SourceServerName
+      Port: !Ref SourcePort
+      DatabaseName: !Ref SourceDatabase
+      Username: !Ref SourceUsername
+      Password: !Ref SourcePassword
+      #################################################
+      # MySQL Settings
+      #################################################
+      MySqlSettings:
+        AfterConnectScript: "SET time_zone='+00:00';"
+        EventsPollInterval: 5
+        MaxFileSize: 32768
+      #################################################
+      # Tags
+      #################################################
+      # Tags:
+      #   - Key: Name
+      #     Value: !Sub "${ProjectName}-${Environment}-source"
+      #   - Key: Project
+      #     Value: !Ref ProjectName
+      #   - Key: Environment
+      #     Value: !Ref Environment
+      #   - Key: ManagedBy
+      #     Value: CloudFormation
 
 Outputs:
 
   DMSReplicationInstanceArn:
     Description: DMS Replication Instance ARN
     Value: !Ref DMSReplicationInstance
-
     Export:
       Name: !Sub "${ProjectName}-${Environment}-DMSReplicationInstanceArn"
+  
+  SourceEndpointArn:
+    Description: Source Endpoint ARN
+    Value: !Ref DMSSourceEndpoint
+    Export:
+      Name: !Sub "${ProjectName}-${Environment}-SourceEndpointArn"
