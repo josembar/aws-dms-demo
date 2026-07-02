@@ -255,3 +255,68 @@ Resources:
       #     Value: !Ref Environment
       #   - Key: ManagedBy
       #     Value: CloudFormation
+  
+#################################################
+# Aurora MySQL Cluster
+#################################################
+AuroraCluster:
+  Type: AWS::RDS::DBCluster
+  DeletionPolicy: Snapshot
+  UpdateReplacePolicy: Snapshot
+  Properties:
+    #################################################
+    # Engine
+    #################################################
+    Engine: aurora-mysql
+    EngineVersion: !Ref EngineVersion
+    #################################################
+    # Database
+    #################################################
+    DatabaseName: !Ref DBName
+    MasterUsername: !Ref MasterUsername
+    MasterUserPassword: !Ref MasterPassword
+    Port: !Ref DBPort
+    #################################################
+    # Networking
+    #################################################
+    DBSubnetGroupName: !Ref AuroraSubnetGroup
+    VpcSecurityGroupIds:
+      - !Ref AuroraSecurityGroup
+    NetworkType: IPV4
+    #################################################
+    # Parameter Groups
+    #################################################
+    DBClusterParameterGroupName: !Ref AuroraClusterParameterGroup
+    #################################################
+    # Backup
+    #################################################
+    BackupRetentionPeriod: !Ref BackupRetentionPeriod
+    CopyTagsToSnapshot: true
+    StorageEncrypted: true
+    #################################################
+    # CloudWatch Logs
+    #################################################
+    EnableCloudwatchLogsExports:
+      - audit
+      - error
+      - general
+      - slowquery
+    #################################################
+    # Protection
+    #################################################
+    DeletionProtection: !If
+      - EnableDeletionProtectionCondition
+      - true
+      - false
+    #################################################
+    # Tags
+    #################################################
+    # Tags:
+    #   - Key: Name
+    #     Value: !Sub "${ProjectName}-${Environment}-cluster"
+    #   - Key: Project
+    #     Value: !Ref ProjectName
+    #   - Key: Environment
+    #     Value: !Ref Environment
+    #   - Key: ManagedBy
+    #     Value: CloudFormation
