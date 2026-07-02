@@ -452,6 +452,16 @@ Outputs:
     Value: !GetAtt AuroraCluster.DbClusterResourceId
     Export:
       Name: !Sub "${ProjectName}-${Environment}-ClusterResourceId"
+  
+  WriterInstanceIdentifier:
+    Value: !Ref AuroraWriterInstance
+    Export:
+      Name: !Sub "${ProjectName}-${Environment}-WriterInstanceIdentifier"
+
+  ClusterIdentifier:
+    Value: !Ref AuroraCluster
+    Export:
+      Name: !Sub "${ProjectName}-${Environment}-ClusterIdentifier"
 
   SecurityGroupId:
     Description: Aurora Security Group
