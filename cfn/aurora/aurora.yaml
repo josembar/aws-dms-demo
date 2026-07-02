@@ -142,6 +142,11 @@ Conditions:
   PublicAccessCondition: !Equals
     - !Ref PubliclyAccessible
     - "true"
+  
+  EnhancedMonitoringEnabled: !Not
+    - !Equals
+      - !Ref MonitoringInterval
+      - 0
 
 Resources:
 
@@ -353,7 +358,10 @@ Resources:
         - true
         - false
       MonitoringInterval: !Ref MonitoringInterval
-      MonitoringRoleArn: !GetAtt RDSEnhancedMonitoringRole.Arn
+      MonitoringRoleArn: !If
+        - EnhancedMonitoringEnabled
+        - !GetAtt RDSEnhancedMonitoringRole.Arn
+        - !Ref AWS::NoValue
       #################################################
       # Tags
       #################################################
