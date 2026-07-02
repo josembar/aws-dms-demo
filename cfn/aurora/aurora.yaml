@@ -331,6 +331,8 @@ Resources:
   #################################################
   AuroraWriterInstance:
     Type: AWS::RDS::DBInstance
+    DeletionPolicy: Snapshot
+    UpdateReplacePolicy: Snapshot
     Properties:
       #################################################
       # Engine
