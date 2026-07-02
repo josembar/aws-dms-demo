@@ -54,7 +54,6 @@ Parameters:
   MultiAZ:
     Type: String
     Default: "false"
-
     AllowedValues:
       - "true"
       - "false"
@@ -62,7 +61,6 @@ Parameters:
   PubliclyAccessible:
     Type: String
     Default: "true"
-
     AllowedValues:
       - "true"
       - "false"
