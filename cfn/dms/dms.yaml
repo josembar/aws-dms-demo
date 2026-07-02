@@ -1,0 +1,128 @@
+AWSTemplateFormatVersion: '2010-09-09'
+
+Description: Creates DMS resources
+
+Parameters:
+  #################################################
+  # General
+  #################################################
+  Environment:
+    Type: String
+    Default: dev
+    AllowedValues:
+      - dev
+      - test
+      - qa
+      - prod
+
+  ProjectName:
+    Type: String
+    Default: aws-dms-lab
+    MinLength: 3
+    MaxLength: 30
+    AllowedPattern: '^[a-zA-Z0-9-]+$'
+
+  #################################################
+  # Networking
+  #################################################
+  VpcId:
+    Type: AWS::EC2::VPC::Id
+    Description: VPC where DMS will be deployed.
+
+  SubnetIds:
+    Type: List<AWS::EC2::Subnet::Id>
+    Description: At least two subnets in different Availability Zones.
+
+  #################################################
+  # Replication Instance
+  #################################################
+  ReplicationInstanceClass:
+    Type: String
+    Default: dms.t3.medium
+    AllowedValues:
+      - dms.t3.micro
+      - dms.t3.small
+      - dms.t3.medium
+      - dms.t3.large
+
+  AllocatedStorage:
+    Type: Number
+    Default: 50
+    MinValue: 20
+    MaxValue: 6144
+
+  MultiAZ:
+    Type: String
+    Default: "false"
+
+    AllowedValues:
+      - "true"
+      - "false"
+
+  PubliclyAccessible:
+    Type: String
+    Default: "true"
+
+    AllowedValues:
+      - "true"
+      - "false"
+
+  #################################################
+  # Source Database
+  #################################################
+  SourceServerName:
+    Type: String
+    Description: ngrok TCP endpoint hostname.
+
+  SourcePort:
+    Type: Number
+    Default: 3306
+
+  SourceDatabase:
+    Type: String
+    Default: company
+
+  SourceUsername:
+    Type: String
+    Default: dms
+
+  SourcePassword:
+    Type: String
+    NoEcho: true
+
+  #################################################
+  # Migration
+  #################################################
+  MigrationType:
+    Type: String
+    Default: full-load-and-cdc
+    AllowedValues:
+      - full-load
+      - cdc
+      - full-load-and-cdc
+
+  EnableCloudWatchLogs:
+    Type: String
+    Default: "true"
+    AllowedValues:
+      - "true"
+      - "false"
+  
+  AuroraStackName:
+    Type: String
+    Default: aws-dms-lab-aurora
+    Description: Name of the deployed Aurora CloudFormation stack.
+
+Conditions:
+
+  MultiAZCondition: !Equals
+    - !Ref MultiAZ
+    - "true"
+
+  PublicAccessCondition: !Equals
+    - !Ref PubliclyAccessible
+    - "true"
+
+  EnableCloudWatchLogsCondition: !Equals
+    - !Ref EnableCloudWatchLogs
+    - "true"
