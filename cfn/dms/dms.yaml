@@ -165,3 +165,58 @@ Resources:
       #     Value: !Ref Environment
       #   - Key: ManagedBy
       #     Value: CloudFormation
+
+  #################################################
+  # DMS Replication Instance
+  #################################################
+  DMSReplicationInstance:
+    Type: AWS::DMS::ReplicationInstance
+    Properties:
+      #################################################
+      # Identifier
+      #################################################
+      ReplicationInstanceIdentifier: !Sub "${ProjectName}-${Environment}-dms"
+      #################################################
+      # Capacity
+      #################################################
+      ReplicationInstanceClass: !Ref ReplicationInstanceClass
+      AllocatedStorage: !Ref AllocatedStorage
+      #################################################
+      # Networking
+      #################################################
+      ReplicationSubnetGroupIdentifier: !Ref DMSReplicationSubnetGroup
+      VpcSecurityGroupIds:
+        - !Ref DMSSecurityGroup
+      PubliclyAccessible: !If
+        - PublicAccessCondition
+        - true
+        - false
+      MultiAZ: !If
+        - MultiAZCondition
+        - true
+        - false
+      #################################################
+      # Maintenance
+      #################################################
+      AutoMinorVersionUpgrade: true
+      #################################################
+      # Tags
+      #################################################
+      # Tags:
+      #   - Key: Name
+      #     Value: !Sub "${ProjectName}-${Environment}-dms"
+      #   - Key: Project
+      #     Value: !Ref ProjectName
+      #   - Key: Environment
+      #     Value: !Ref Environment
+      #   - Key: ManagedBy
+      #     Value: CloudFormation
+
+Outputs:
+
+  DMSReplicationInstanceArn:
+    Description: DMS Replication Instance ARN
+    Value: !Ref DMSReplicationInstance
+
+    Export:
+      Name: !Sub "${ProjectName}-${Environment}-DMSReplicationInstanceArn"
