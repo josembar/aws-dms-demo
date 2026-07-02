@@ -447,11 +447,11 @@ Outputs:
     Export:
       Name: !Sub "${ProjectName}-${Environment}-ClusterArn"
 
-  ClusterResourceId:
-    Description: Aurora Cluster Resource ID
-    Value: !GetAtt AuroraCluster.DbClusterResourceId
-    Export:
-      Name: !Sub "${ProjectName}-${Environment}-ClusterResourceId"
+  # ClusterResourceId:
+  #   Description: Aurora Cluster Resource ID
+  #   Value: !GetAtt AuroraCluster.DbClusterResourceId
+  #   Export:
+  #     Name: !Sub "${ProjectName}-${Environment}-ClusterResourceId"
   
   WriterInstanceIdentifier:
     Value: !Ref AuroraWriterInstance
