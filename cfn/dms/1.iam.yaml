@@ -1,0 +1,71 @@
+AWSTemplateFormatVersion: '2010-09-09'
+
+Description: >
+  Creates the IAM service roles required by AWS Database Migration Service (DMS).
+
+Resources:
+
+  #################################################
+  # DMS VPC Role
+  #################################################
+  DMSVPCRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: dms-vpc-role
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: dms.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      ManagedPolicyArns:
+        - !Sub arn:${AWS::Partition}:iam::aws:policy/service-role/AmazonDMSVPCManagementRole
+      # Tags:
+      #   - Key: Name
+      #     Value: dms-vpc-role
+      #   - Key: ManagedBy
+      #     Value: CloudFormation
+      #   - Key: Service
+      #     Value: AWS DMS
+
+  #################################################
+  # DMS CloudWatch Logs Role
+  #################################################
+  DMSCloudWatchLogsRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: dms-cloudwatch-logs-role
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: dms.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      ManagedPolicyArns:
+
+        - !Sub arn:${AWS::Partition}:iam::aws:policy/service-role/AmazonDMSCloudWatchLogsRole
+      # Tags:
+      #   - Key: Name
+      #     Value: dms-cloudwatch-logs-role
+      #   - Key: ManagedBy
+      #     Value: CloudFormation
+      #   - Key: Service
+      #     Value: AWS DMS
+
+Outputs:
+
+  DMSVPCRoleArn:
+    Description: ARN of the DMS VPC Role
+    Value: !GetAtt DMSVPCRole.Arn
+    Export:
+      Name: DMSVPCRoleArn
+
+  DMSCloudWatchLogsRoleArn:
+    Description: ARN of the DMS CloudWatch Logs Role
+    Value: !GetAtt DMSCloudWatchLogsRole.Arn
+    Export:
+      Name: DMSCloudWatchLogsRoleArn
