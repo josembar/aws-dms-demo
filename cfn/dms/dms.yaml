@@ -146,3 +146,22 @@ Resources:
       #     Value: !Ref Environment
       #   - Key: ManagedBy
       #     Value: CloudFormation
+  
+  #################################################
+  # DMS Security Group
+  #################################################
+  DMSSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security Group for AWS DMS
+      GroupName: !Sub "${ProjectName}-${Environment}-dms-sg"
+      VpcId: !Ref VpcId
+      # Tags:
+      #   - Key: Name
+      #     Value: !Sub "${ProjectName}-${Environment}-dms-sg"
+      #   - Key: Project
+      #     Value: !Ref ProjectName
+      #   - Key: Environment
+      #     Value: !Ref Environment
+      #   - Key: ManagedBy
+      #     Value: CloudFormation
